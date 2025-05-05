@@ -17,6 +17,7 @@
                         @if (session('success'))
                             <p style="color: green;">{{ session('success') }}</p>
                         @endif
+                        
                         <form method="POST" action="{{ route('store') }}">
                             @csrf
                             <label for="form-label">Task</label>
@@ -41,9 +42,24 @@
                 <div class="card-header bg-warning text-white text-center">
                     <strong>Pending</strong>
                 </div>
+                @if (session('danger'))
+                            <p style="color: red;">{{ session('danger') }}</p>
+                        @endif
                 <div class="card-body" id="pending">
                     @foreach ($pendings as $pending)
-                        <p>{{ $pending->title }}</p>
+                    
+
+                        <div class="task-item" draggable="true" ondragstart="drag(event)" id="task-{{ $pending->id }}">
+                            <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                        <p class="mb-0">{{ $pending->title }}</p>
+                        <form class="d-inline" method="POST" action="{{ route('destroy', $pending->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                        </form>
+                        </div>
+
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -54,7 +70,9 @@
                     <strong>Started</strong>
                 </div>
                 <div class="card-body" id="started">
-                    <!-- Tasks go here -->
+                    <div class="card-column" ondrop="drop(event, 'started')" ondragover="allowDrop(event)">
+                        
+                    </div>
                 </div>
             </div>
     
