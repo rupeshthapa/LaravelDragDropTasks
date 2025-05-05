@@ -16,7 +16,8 @@ class TaskController extends Controller
     {
         $pendings = Task::where('status', 'pending')->get();
         $started = Task::where('status', 'started')->get();
-        return view('welcome', compact('pendings', 'started'));
+        $testing = Task::where('status', 'testing')->get();
+        return view('welcome', compact('pendings', 'started', 'testing'));
 
     }
 
