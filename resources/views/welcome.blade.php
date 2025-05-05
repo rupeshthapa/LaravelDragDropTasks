@@ -65,13 +65,22 @@
             </div>
     
             <!-- Started -->
-            <div class="card flex-shrink-0" style="width: 300px;">
+            <div class="card flex-shrink-0" style="width: 300px;" ondrop="drop(event, 'started')" ondragover="allowDrop(event)">
                 <div class="card-header bg-primary text-white text-center">
                     <strong>Started</strong>
                 </div>
                 <div class="card-body" id="started">
-                    <div class="card-column" ondrop="drop(event, 'started')" ondragover="allowDrop(event)">
-                        
+                    <div class="card-column">
+                @foreach ($started as $start )
+                <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                    <p class="mb-0">{{ $start->title }}</p>
+                    <form class="d-inline" method="POST" >
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                    </form>
+                </div>
+                @endforeach
                     </div>
                 </div>
             </div>
@@ -111,5 +120,34 @@
 
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+        function drag(event){
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event, newStatus){
+            event.preventDefault();
+            const taskId = event.dataTransfer.getData("text").split('-')[1];
+           
+            const task = document.getElementById(`task-${taskId}`);
+            event.target.appendChild(task);
+            console.log(taskId);
+            fetch('/tasks/'+taskId+'/update-status', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: newStatus })
+                }).then(response=>{
+                    if(!response.ok){
+                        alert("Failed to update!");
+                    }
+                });
+        }
+    </script>
 </body>
 </html>

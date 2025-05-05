@@ -15,8 +15,8 @@ class TaskController extends Controller
     public function index()
     {
         $pendings = Task::where('status', 'pending')->get();
-        
-        return view('welcome', compact('pendings'));
+        $started = Task::where('status', 'started')->get();
+        return view('welcome', compact('pendings', 'started'));
 
     }
 
@@ -60,9 +60,12 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $task = Task::find($id);
+        $task->status = $request->status;
+        $task->save();
+        return response()->json(['success' => true]);
     }
 
     /**
