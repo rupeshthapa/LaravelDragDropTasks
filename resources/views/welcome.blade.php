@@ -46,9 +46,15 @@
             @foreach ($pendings as $pending)
             <li id="task-{{ $pending->id }}"
                 draggable="true"
-                ondragstart="drag(event)"
-                class="mb-2 p-2 bg-light border rounded">
-                        {{ $pending->title }}
+                ondragstart="drag(event)">
+                <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                    <p class="mb-0">{{ $pending->title }}</p>
+                    <form class="d-inline" method="POST" action="{{ route('destroy', $pending->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                    </form>
+                </div>
                     </li>
                 @endforeach
             </ol>
@@ -60,10 +66,17 @@
             <h5 class="card-title text-center">Started</h5>
             <ol>
            @foreach ($started as $start)
-               <li id="task-{{ $start->id }}" class="mb-2 p-2 bg-light border rounded"
+               <li id="task-{{ $start->id }}"
                 draggable="true"
                 ondragstart="drag(event)">
-                        {{ $start->title }}
+                <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                    <p class="mb-0">{{ $start->title }}</p>
+                    <form class="d-inline" method="POST" action="{{ route('destroy', $start->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                    </form>
+                </div>
                     </li>
                 @endforeach
             </ol>
@@ -75,12 +88,18 @@
             <h5 class="card-title text-center">Testing</h5>
             <ol>
             @foreach ($testing as $test)
-                <li id="task-{{ $test->id }}" class="mb-2 p-2 bg-light border rounded"
+                <li id="task-{{ $test->id }}"
                     draggable="true"
                     ondragstart="drag(event)">
                     
-                       
-                            {{ $test->title }}
+                    <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                        <p class="mb-0">{{ $test->title }}</p>
+                        <form class="d-inline" method="POST" action="{{ route('destroy', $test->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                        </form>
+                    </div>
                        
                     @endforeach
                 </ol>
@@ -93,12 +112,18 @@
             <h5 class="card-title text-center">Completed</h5>
             <ol>
             @foreach ($completed as $complete)
-                <li id="task-{{ $complete->id }}" class="mb-2 p-2 bg-light border rounded"
+                <li id="task-{{ $complete->id }}"
                     draggable="true"
                     ondragstart="drag(event)">
                     
-                        
-                            {{ $complete->title }}
+                    <div class="d-flex justify-content-between align-items-center py-1 px-2 border rounded bg-light mb-2" style="font-size: 0.9rem;">
+                        <p class="mb-0">{{ $complete->title }}</p>
+                        <form class="d-inline" method="POST" action="{{ route('destroy', $complete->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger py-0 px-2">Delete</button>
+                        </form>
+                    </div>
                         </li>
                     
                         @endforeach
