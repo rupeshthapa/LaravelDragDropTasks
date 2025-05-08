@@ -8,6 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+
+    @if (session('danger'))
+        <p style="color: red;">{{ session('danger') }}</p>
+    @endif
+
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
@@ -145,48 +151,22 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function allowDrop(event) {
+        function allowDrop(event){
             event.preventDefault();
         }
+
         function drag(event){
             event.dataTransfer.setData("text", event.target.id);
         }
+        function drop(event, newStatus){
+            event.preventDefault();
 
-        function drop(event, newStatus) {
-    event.preventDefault();
+            const taskId = event.dataTransfer.getData("text").split('-')[1];
+            const task = document.getElementById(`task-${taskId}`);
 
-    // Get the task ID from the dataTransfer object
-    const taskId = event.dataTransfer.getData("text").split('-')[1];  // Assuming task ID is set as "task-123"
-    const task = document.getElementById(`task-${taskId}`);  // Get the task element by its ID
-    
-    // Find the target list to append the task (the <ol> inside the target container)
-    const targetList = event.target.querySelector('ol');
-    
-    if (targetList) {
-        // Append the task to the target list
-        targetList.appendChild(task);
-    } else {
-        // If no <ol> is found in the target, just append the task to the event target
-        event.target.appendChild(task);
-    }
-    
-    console.log(`Task ID: ${taskId}, New Status: ${newStatus}`);
-    
-    // Send the updated status to the server via a POST request
-    fetch(`/tasks/${taskId}/update-status`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ status: newStatus })
-    }).then(response => {
-        if (!response.ok) {
-            alert("Failed to update!");
+            const target = event.target;
+            const targetList = target.closet('ol'); 
         }
-    });
-}
-
 
         
     </script>
